@@ -163,6 +163,36 @@ class Tree
     return -1 #if not found
   end
 
+  ####
+
+  def balanced?(root)
+    height_and_balance(root)[1]
+  end
+
+  def height_and_balance(node)
+    return [-1, true] if node.nil? # Height of a null node is -1, and it's balanced
+
+    left_height, left_balanced = height_and_balance(node.left)
+    right_height, right_balanced = height_and_balance(node.right)
+
+    
+    current_height = [left_height, right_height].max + 1
+    
+    if left_balanced && right_balanced && (left_height - right_height).abs <= 1
+      current_balanced = true
+    else
+      current_balanced = false
+    end
+    return [current_height, current_balanced]
+  end
+
+  #####
+
+  def rebalance(tree)
+    nodes = tree.inorder(tree.root)
+    tree.root = tree.build_tree(nodes)
+  end
+
 
 
   private 
