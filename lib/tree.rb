@@ -111,7 +111,7 @@ class Tree
     inorder(node.right, result, &block)
     result
   end
-  
+
   ###
   def postorder(node = @root, result = [], &block) # left, right, root
     return result if node.nil? 
@@ -137,6 +137,33 @@ class Tree
     preorder(node.right, result, &block)
     result
   end
+
+  ####
+  def height(node)
+    return -1 if node.nil?
+
+    left_height = height(node.left)
+    right_height = height(node.right)
+
+    return [left_height, right_height].max + 1
+  end
+
+  ####
+  
+  def depth(node, current_node = @root, depth = 0)
+
+    return -1 if node.nil? || current_node.nil? 
+    return depth if current_node == node 
+    
+    left_depth = depth(node, current_node.left, depth + 1)
+    return left_depth if left_depth != -1
+    right_depth = depth(node, current_node.right, depth + 1)
+    return right_depth if right_depth != -1
+
+    return -1 #if not found
+  end
+
+
 
   private 
   def find_min(node)
