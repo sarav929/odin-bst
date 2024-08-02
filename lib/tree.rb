@@ -7,8 +7,6 @@ class Tree
   def initialize(array)
     @root = build_tree(array.sort.uniq) 
   end
-
-  #####
   
   def build_tree(array, start = 0, end_index = array.length - 1)
 
@@ -21,8 +19,6 @@ class Tree
 
     return root_node
   end
-
-  ######
   
   def insert(data, node = @root)
 
@@ -38,7 +34,6 @@ class Tree
     return node
   end
 
-  #####
   
   def delete(data, node = @root)
 
@@ -49,25 +44,18 @@ class Tree
     elsif data > node.data
       node.right = delete(data, node.right)
     else
-      #1. Node to be deleted is a leaf (no children): Simply remove the node.
       return nil if node.left.nil? && node.right.nil?    
-      #2.Node to be deleted has one child: Replace the node with its child.
       return node.left if node.right.nil?
       return node.right if node.left.nil? 
     
-      #3. Node to be deleted has two children:
-      #Find the in-order successor (the smallest value in the right subtree)
       successor = find_min(node.right)
-      #Replace the node's value with the in-order successor.
       node.data = successor.data
-      #Recursively delete the in-order successor.
       node.right = delete(successor.data, node.right)
       
     end
     return node
   end
 
-  ######
 
   def find(data, node = @root)
     return node if node.data == data
@@ -80,7 +68,6 @@ class Tree
     end
   end
 
-  #######
   
   def level_order(node = @root, &block)
     return [] if node.nil? 
@@ -90,16 +77,16 @@ class Tree
 
     while !queue.empty? 
       current = queue.shift
-      result << current
+      result << current.data
       queue << current.left if current.left
       queue << current.right if current.right
-      yield current if block.given? 
+      yield current if block_given? 
     end
 
     return result
   end
 
-  #####
+ 
   def inorder(node = @root, result = [], &block) # left, root, right
     return result if node.nil? 
     inorder(node.left, result, &block)
@@ -112,7 +99,7 @@ class Tree
     result
   end
 
-  ###
+
   def postorder(node = @root, result = [], &block) # left, right, root
     return result if node.nil? 
     postorder(node.left, result, &block)
@@ -125,7 +112,7 @@ class Tree
     result
   end
 
-  ###
+  
   def preorder(node = @root, result = [], &block) # root, left, right
     return result if node.nil?
     if block_given?
@@ -138,7 +125,7 @@ class Tree
     result
   end
 
-  ####
+ 
   def height(node)
     return -1 if node.nil?
 
@@ -148,7 +135,6 @@ class Tree
     return [left_height, right_height].max + 1
   end
 
-  ####
   
   def depth(node, current_node = @root, depth = 0)
 
@@ -160,17 +146,17 @@ class Tree
     right_depth = depth(node, current_node.right, depth + 1)
     return right_depth if right_depth != -1
 
-    return -1 #if not found
+    return -1 
   end
 
-  ####
 
   def balanced?(root)
     height_and_balance(root)[1]
   end
 
+
   def height_and_balance(node)
-    return [-1, true] if node.nil? # Height of a null node is -1, and it's balanced
+    return [-1, true] if node.nil? 
 
     left_height, left_balanced = height_and_balance(node.left)
     right_height, right_balanced = height_and_balance(node.right)
@@ -186,7 +172,6 @@ class Tree
     return [current_height, current_balanced]
   end
 
-  #####
 
   def rebalance(tree)
     nodes = tree.inorder(tree.root)
@@ -194,14 +179,11 @@ class Tree
   end
 
 
-
   private 
   def find_min(node)
     current = node
-    current = node.left while node.left #go through left subtree of right node
+    current = node.left while node.left 
     current   
-  end
-
-  
+  end 
 
 end

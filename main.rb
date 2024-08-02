@@ -9,10 +9,45 @@ end
 
 # test
 
-array = [1,2,3,4,5,6,7,8,9,10]
+array = (Array.new(15) { rand(1..100) })
 
 tree = Tree.new(array)
 
 pretty_print(tree.root)
 
-puts tree.find(8).data
+if tree.balanced?(tree.root) 
+  puts "The tree is balanced" 
+else 
+  puts "The tree is not balanced"
+end
+
+puts "Level-order: #{tree.level_order(tree.root).join(', ')}"
+puts "In-order: #{tree.inorder(tree.root).join(', ')}"
+puts "Pre-order: #{tree.preorder(tree.root).join(', ')}"
+puts "Post-order: #{tree.postorder(tree.root).join(', ')}"
+
+tree.insert(104)
+tree.insert(110)
+tree.insert(150)
+tree.insert(126)
+
+if tree.balanced?(tree.root) 
+  puts "The tree is balanced" 
+else 
+  puts "The tree is not balanced"
+end
+
+puts "Rebalancing..."
+tree.rebalance(tree)
+
+if tree.balanced?(tree.root) 
+  puts "The tree is balanced" 
+else 
+  puts "The tree is not balanced"
+end
+
+puts "Level-order: #{tree.level_order(tree.root).join(', ')}"
+puts "In-order: #{tree.inorder(tree.root).join(', ')}"
+puts "Pre-order: #{tree.preorder(tree.root).join(', ')}"
+puts "Post-order: #{tree.postorder(tree.root).join(', ')}"
+
