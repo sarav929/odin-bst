@@ -67,6 +67,8 @@ class Tree
     return node
   end
 
+  ######
+
   def find(data, node = @root)
     return node if node.data == data
     return nil if node.nil?
@@ -76,6 +78,64 @@ class Tree
     elsif data > node.data
       find(data, node.right)
     end
+  end
+
+  #######
+  
+  def level_order(node = @root, &block)
+    return [] if node.nil? 
+
+    result = []
+    queue = [node]
+
+    while !queue.empty? 
+      current = queue.shift
+      result << current
+      queue << current.left if current.left
+      queue << current.right if current.right
+      yield current if block.given? 
+    end
+
+    return result
+  end
+
+  #####
+  def inorder(node = @root, result = [], &block) # left, root, right
+    return result if node.nil? 
+    inorder(node.left, result, &block)
+    if block_given?
+      yield node
+    else
+      result << node.data
+    end
+    inorder(node.right, result, &block)
+    result
+  end
+  
+  ###
+  def postorder(node = @root, result = [], &block) # left, right, root
+    return result if node.nil? 
+    postorder(node.left, result, &block)
+    postorder(node.right, result, &block)
+    if block_given? 
+      yield node
+    else
+      result << node.data
+    end 
+    result
+  end
+
+  ###
+  def preorder(node = @root, result = [], &block) # root, left, right
+    return result if node.nil?
+    if block_given?
+      yield node
+    else
+      result << node.data
+    end 
+    preorder(node.left, result, &block)
+    preorder(node.right, result, &block)
+    result
   end
 
   private 
