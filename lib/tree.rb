@@ -24,18 +24,56 @@ class Tree
 
   ######
   
-  def insert(data, root = @root)
-    
+  def insert(data, node = @root)
+
     new_node = Node.new(data)
     
-    return new_node if root.nil? #found position
-    if data < root.data
-      root.left = insert(data, root.left)
-    elsif data > root.data
-      root.right = insert(data, root.right)
+    return new_node if node.nil? #found position
+    if data < node.data
+      node.left = insert(data, node.left)
+    elsif data > node.data
+      node.right = insert(data, node.right)
     end
 
-    return root
+    return node
   end
+
+  #####
+  
+  def delete(data, node = @root)
+
+    return node if node.nil? 
+
+    if data < node.data
+      node.left = delete(data, node.left)
+    elsif data > node.data
+      node.right = delete(data, node.right)
+    else
+      #1. Node to be deleted is a leaf (no children): Simply remove the node.
+      return nil if node.left.nil? && node.right.nil?    
+      #2.Node to be deleted has one child: Replace the node with its child.
+      return node.left if node.right.nil?
+      return node.right if node.left.nil? 
+    
+      #3. Node to be deleted has two children:
+      #Find the in-order successor (the smallest value in the right subtree)
+      successor = find_min(node.right)
+      #Replace the node's value with the in-order successor.
+      node.data = successor.data
+      #Recursively delete the in-order successor.
+      node.right = delete(successor.data, node.right)
+      
+    end
+    return node
+  end
+
+  private 
+  def find_min(node)
+    current = node
+    current = node.left while node.left #go through left subtree of right node
+    current   
+  end
+
+  
 
 end
