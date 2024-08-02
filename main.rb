@@ -15,6 +15,4 @@ tree = Tree.new(array)
 
 pretty_print(tree.root)
 
-tree.delete(2)
-
-pretty_print(tree.root)
+puts tree.find(8).data

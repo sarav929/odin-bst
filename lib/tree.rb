@@ -67,6 +67,17 @@ class Tree
     return node
   end
 
+  def find(data, node = @root)
+    return node if node.data == data
+    return nil if node.nil?
+
+    if data < node.data
+      find(data, node.left)
+    elsif data > node.data
+      find(data, node.right)
+    end
+  end
+
   private 
   def find_min(node)
     current = node
